@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brands Family</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=1"></script>
     <style>
         * {
             margin: 0;
@@ -280,16 +280,19 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4ZWhzZ2ZjZGV2Z3VrZHZ0cWpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNTIyNzcsImV4cCI6MjA5NjkyODI3N30.V--bCq58oo0Wgp0b0b8SwaqvGSmero04iwIfmWBfHbk';
 
         // Initialize Supabase client
-        let supabase;
+        if (typeof window.supabase === 'undefined') {
+            window.supabase = null;
+        }
         try {
             if (typeof supabase !== 'undefined') {
-                supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             } else {
                 console.error('Supabase library not loaded');
             }
         } catch (error) {
             console.error('Error initializing Supabase:', error);
         }
+        const supabase = window.supabase;
 
         // Close modal when clicking outside
         window.onclick = function(event) {
