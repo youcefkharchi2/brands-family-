@@ -246,18 +246,7 @@
     </div>
 
     <script>
-        // Configure Supabase - Replace these with your actual Supabase credentials
-        const SUPABASE_URL = 'https://gxehsgfcdevgukdvtqjr.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4ZWhzZ2ZjZGV2Z3VrZHZ0cWpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNTIyNzcsImV4cCI6MjA5NjkyODI3N30.V--bCq58oo0Wgp0b0b8SwaqvGSmero04iwIfmWBfHbk';
-
-        // Initialize Supabase client
-        let supabase;
-        try {
-            supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        } catch (error) {
-            console.error('Error initializing Supabase:', error);
-        }
-
+        // Define modal functions first
         function showModal() {
             console.log('showModal called');
             const modal = document.getElementById('loginModal');
@@ -268,6 +257,22 @@
 
         function hideModal() {
             document.getElementById('loginModal').style.display = 'none';
+        }
+
+        // Configure Supabase - Replace these with your actual Supabase credentials
+        const SUPABASE_URL = 'https://gxehsgfcdevgukdvtqjr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4ZWhzZ2ZjZGV2Z3VrZHZ0cWpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNTIyNzcsImV4cCI6MjA5NjkyODI3N30.V--bCq58oo0Wgp0b0b8SwaqvGSmero04iwIfmWBfHbk';
+
+        // Initialize Supabase client
+        let supabase;
+        try {
+            if (typeof supabase !== 'undefined') {
+                supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            } else {
+                console.error('Supabase library not loaded');
+            }
+        } catch (error) {
+            console.error('Error initializing Supabase:', error);
         }
 
         // Close modal when clicking outside
