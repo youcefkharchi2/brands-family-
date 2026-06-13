@@ -229,7 +229,7 @@
             </div>
         </div>
         <div class="nav-buttons">
-            <button onclick="showModal()">Se connecter</button>
+            <button id="connectBtn">Se connecter</button>
             <button><img src="image/image 2.png" alt="Store"> Store</button>
         </div>
     </header>
@@ -258,6 +258,14 @@
         function hideModal() {
             document.getElementById('loginModal').style.display = 'none';
         }
+
+        // Add event listener for connect button
+        document.addEventListener('DOMContentLoaded', function() {
+            const connectBtn = document.getElementById('connectBtn');
+            if (connectBtn) {
+                connectBtn.addEventListener('click', showModal);
+            }
+        });
 
         // Configure Supabase - Replace these with your actual Supabase credentials
         const SUPABASE_URL = 'https://gxehsgfcdevgukdvtqjr.supabase.co';
