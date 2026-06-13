@@ -261,9 +261,17 @@
 
         // Add event listener for connect button
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
             const connectBtn = document.getElementById('connectBtn');
+            console.log('Connect button found:', connectBtn);
             if (connectBtn) {
-                connectBtn.addEventListener('click', showModal);
+                connectBtn.addEventListener('click', function(e) {
+                    console.log('Button clicked!', e);
+                    showModal();
+                });
+                console.log('Event listener added to connect button');
+            } else {
+                console.error('Connect button not found!');
             }
         });
 
