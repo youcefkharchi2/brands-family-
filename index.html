@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brands Family</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: white;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-buttons button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-family: 'TT Moons', Arial, sans-serif;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-buttons button img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .nav-buttons button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .logo {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .brands {
+            color: red;
+        }
+
+        .family {
+            color: #aaa;
+            font-size: 24px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-family: 'TT Moons', Arial, sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-family: 'TT Moons', Arial, sans-serif;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'TT Moons', Arial, sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+
+        .gmail-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'TT Moons', Arial, sans-serif;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .gmail-btn:hover {
+            background-color: #3367d6;
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: white;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'TT Moons', Arial, sans-serif;
+            font-weight: bold;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .google-btn:hover {
+            background-color: #f8f8f8;
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #666;
+            font-family: 'TT Moons', Arial, sans-serif;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #ddd;
+        }
+
+        .divider span {
+            padding: 0 10px;
+            font-size: 14px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <img src="image/brands.png" alt="Brands Family Logo" class="logo">
+            <div class="brand-name">
+                <span class="brands">Brands</span>
+                <span class="family">Family</span>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="showModal()">Se connecter</button>
+            <button><img src="image/image 2.png" alt="Store"> Store</button>
+        </div>
+    </header>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="hideModal()">&times;</span>
+            <h2>Se connecter</h2>
+            <button type="button" class="google-btn" onclick="signInWithGoogle()">
+                <img src="https://www.google.com/favicon.ico" alt="Google">
+                CONTINUER AVEC GOOGLE
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configure Supabase - Replace these with your actual Supabase credentials
+        const SUPABASE_URL = 'https://gxehsgfcdevgukdvtqjr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4ZWhzZ2ZjZGV2Z3VrZHZ0cWpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNTIyNzcsImV4cCI6MjA5NjkyODI3N30.V--bCq58oo0Wgp0b0b8SwaqvGSmero04iwIfmWBfHbk';
+
+        // Initialize Supabase client
+        let supabase;
+        try {
+            supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (error) {
+            console.error('Error initializing Supabase:', error);
+        }
+
+        function showModal() {
+            console.log('showModal called');
+            const modal = document.getElementById('loginModal');
+            console.log('Modal element:', modal);
+            modal.style.display = 'flex';
+            console.log('Modal display set to flex');
+        }
+
+        function hideModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Sign in with Google using Supabase
+        async function signInWithGoogle() {
+            try {
+                if (!supabase) {
+                    alert('Supabase is not configured. Please add your Supabase credentials.');
+                    return;
+                }
+
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.href,
+                    }
+                });
+
+                if (error) {
+                    console.error('Error signing in with Google:', error);
+                    alert('Error signing in with Google: ' + error.message);
+                    return;
+                }
+
+                // The user will be redirected to Google's OAuth page
+                // After successful authentication, they'll be redirected back to this page
+                console.log('Redirecting to Google OAuth...');
+            } catch (error) {
+                console.error('Unexpected error during Google sign-in:', error);
+                alert('An unexpected error occurred. Please try again.');
+            }
+        }
+
+        // Check for authentication state on page load
+        async function checkAuthState() {
+            try {
+                if (!supabase) return;
+
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (session) {
+                    console.log('User is authenticated:', session.user);
+                    // You can update the UI to show the user is logged in
+                    // For example, change the "Se connecter" button to show user info
+                    const connectBtn = document.querySelector('.nav-buttons button:first-child');
+                    if (connectBtn) {
+                        connectBtn.textContent = session.user.email;
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking auth state:', error);
+            }
+        }
+
+        // Listen for authentication state changes
+        if (supabase) {
+            supabase.auth.onAuthStateChange((event, session) => {
+                console.log('Auth state changed:', event, session);
+                if (event === 'SIGNED_IN' && session) {
+                    console.log('User signed in:', session.user);
+                    hideModal();
+                    const connectBtn = document.querySelector('.nav-buttons button:first-child');
+                    if (connectBtn) {
+                        connectBtn.textContent = session.user.email;
+                    }
+                } else if (event === 'SIGNED_OUT') {
+                    console.log('User signed out');
+                    const connectBtn = document.querySelector('.nav-buttons button:first-child');
+                    if (connectBtn) {
+                        connectBtn.textContent = 'Se connecter';
+                    }
+                }
+            });
+        }
+
+        // Check auth state when page loads
+        window.addEventListener('load', checkAuthState);
+    </script>
+</body>
+</html>
