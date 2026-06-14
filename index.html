@@ -316,23 +316,37 @@
 
         // Update user profile UI
         function updateUserProfile(user) {
+            console.log('updateUserProfile called with user:', user);
             const loginBtn = document.getElementById('loginBtn');
             const userProfile = document.getElementById('userProfile');
             const userPhoto = document.getElementById('userPhoto');
             const userName = document.getElementById('userName');
 
+            console.log('loginBtn:', loginBtn);
+            console.log('userProfile:', userProfile);
+
             if (user) {
                 // Hide login button and show user profile
-                if (loginBtn) loginBtn.style.display = 'none';
+                if (loginBtn) {
+                    loginBtn.style.display = 'none';
+                    console.log('loginBtn hidden');
+                }
                 if (userProfile) {
                     userProfile.style.display = 'flex';
                     userPhoto.src = user.photoURL || 'https://via.placeholder.com/35';
                     userName.textContent = user.displayName || user.email;
+                    console.log('userProfile shown with:', user.displayName || user.email);
                 }
             } else {
                 // Show login button and hide user profile
-                if (loginBtn) loginBtn.style.display = 'block';
-                if (userProfile) userProfile.style.display = 'none';
+                if (loginBtn) {
+                    loginBtn.style.display = 'block';
+                    console.log('loginBtn shown');
+                }
+                if (userProfile) {
+                    userProfile.style.display = 'none';
+                    console.log('userProfile hidden');
+                }
             }
         }
 
