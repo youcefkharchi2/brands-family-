@@ -211,12 +211,20 @@
         .dropdown-menu button:hover {
             background-color: #f0f0f0;
         }
+
+        .dropdown-menu button.logout-btn {
+            color: red;
+        }
+
+        .dropdown-menu button.logout-btn:hover {
+            background-color: #fee;
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="logo-container">
-            <img src="image/brands.png" alt="Brands Family Logo" class="logo">
+            <img src="image/brands" alt="Brands Family Logo" class="logo">
             <div class="brand-name">
                 <span class="brands">Brands</span>
                 <span class="family">Family</span>
@@ -228,7 +236,7 @@
                 <img id="userPhoto" src="" alt="User Photo">
                 <span id="userName"></span>
                 <div id="dropdownMenu" class="dropdown-menu">
-                    <button onclick="signOut()">Log out</button>
+                    <button onclick="signOut()" class="logout-btn">Log out</button>
                 </div>
             </div>
             <button><img src="image/image 2.png" alt="Store"> Store</button>
@@ -326,14 +334,14 @@
             console.log('userProfile:', userProfile);
 
             if (user) {
-                // Hide login button and show user profile
+                // Keep login button visible and show user profile
                 if (loginBtn) {
-                    loginBtn.style.display = 'none';
-                    console.log('loginBtn hidden');
+                    loginBtn.style.display = 'block';
+                    console.log('loginBtn kept visible');
                 }
                 if (userProfile) {
                     userProfile.style.display = 'flex';
-                    userPhoto.src = user.photoURL || 'https://via.placeholder.com/35';
+                    userPhoto.src = 'image/image3';
                     userName.textContent = user.displayName || user.email;
                     console.log('userProfile shown with:', user.displayName || user.email);
                 }
