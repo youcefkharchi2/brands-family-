@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brands Family</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=1"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -111,51 +112,6 @@
             font-family: 'TT Moons', Arial, sans-serif;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-            font-family: 'TT Moons', Arial, sans-serif;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            font-family: 'TT Moons', Arial, sans-serif;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #4285f4;
-        }
-
-        .gmail-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-family: 'TT Moons', Arial, sans-serif;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .gmail-btn:hover {
-            background-color: #3367d6;
-        }
-
         .google-btn {
             width: 100%;
             padding: 12px;
@@ -184,27 +140,6 @@
             height: 20px;
         }
 
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: #666;
-            font-family: 'TT Moons', Arial, sans-serif;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background-color: #ddd;
-        }
-
-        .divider span {
-            padding: 0 10px;
-            font-size: 14px;
-        }
-
         .close-btn {
             position: absolute;
             top: 10px;
@@ -229,7 +164,7 @@
             </div>
         </div>
         <div class="nav-buttons">
-            <button id="connectBtn">Se connecter</button>
+            <button id="loginBtn">Login</button>
             <button><img src="image/image 2.png" alt="Store"> Store</button>
         </div>
     </header>
@@ -237,7 +172,7 @@
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="hideModal()">&times;</span>
-            <h2>Se connecter</h2>
+            <h2>Login</h2>
             <button type="button" class="google-btn" onclick="signInWithGoogle()">
                 <img src="https://www.google.com/favicon.ico" alt="Google">
                 CONTINUER AVEC GOOGLE
@@ -246,53 +181,37 @@
     </div>
 
     <script>
-        // Define modal functions first
+        // Configure Firebase - Replace these with your actual Firebase credentials
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXUeFNWccjJtCtgcFQjEWtTC4F4MFg48U",
+            authDomain: "brands-family.firebaseapp.com",
+            projectId: "brands-family",
+            storageBucket: "brands-family.firebasestorage.app",
+            messagingSenderId: "702218005854",
+            appId: "1:702218005854:web:72dea83bc506d5c70b33cf",
+            measurementId: "G-7V70QCZ5NY"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Modal functions
         function showModal() {
-            console.log('showModal called');
-            const modal = document.getElementById('loginModal');
-            console.log('Modal element:', modal);
-            modal.style.display = 'flex';
-            console.log('Modal display set to flex');
+            document.getElementById('loginModal').style.display = 'flex';
         }
 
         function hideModal() {
             document.getElementById('loginModal').style.display = 'none';
         }
 
-        // Add event listener for connect button
+        // Add event listener for login button
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded');
-            const connectBtn = document.getElementById('connectBtn');
-            console.log('Connect button found:', connectBtn);
-            if (connectBtn) {
-                connectBtn.addEventListener('click', function(e) {
-                    console.log('Button clicked!', e);
-                    showModal();
-                });
-                console.log('Event listener added to connect button');
-            } else {
-                console.error('Connect button not found!');
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', showModal);
             }
         });
-
-        // Configure Supabase - Replace these with your actual Supabase credentials
-        const SUPABASE_URL = 'https://gxehsgfcdevgukdvtqjr.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4ZWhzZ2ZjZGV2Z3VrZHZ0cWpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNTIyNzcsImV4cCI6MjA5NjkyODI3N30.V--bCq58oo0Wgp0b0b8SwaqvGSmero04iwIfmWBfHbk';
-
-        // Initialize Supabase client
-        if (typeof window.supabase === 'undefined') {
-            window.supabase = null;
-        }
-        try {
-            if (typeof supabase !== 'undefined') {
-                window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            } else {
-                console.error('Supabase library not loaded');
-            }
-        } catch (error) {
-            console.error('Error initializing Supabase:', error);
-        }
-        const supabase = window.supabase;
 
         // Close modal when clicking outside
         window.onclick = function(event) {
@@ -302,80 +221,40 @@
             }
         }
 
-        // Sign in with Google using Supabase
+        // Sign in with Google using Firebase
         async function signInWithGoogle() {
             try {
-                if (!supabase) {
-                    alert('Supabase is not configured. Please add your Supabase credentials.');
-                    return;
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                console.log('User signed in with Google:', result.user);
+                hideModal();
+                // Update UI to show user is logged in
+                const loginBtn = document.getElementById('loginBtn');
+                if (loginBtn) {
+                    loginBtn.textContent = result.user.displayName || result.user.email;
                 }
-
-                const { data, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: window.location.href,
-                    }
-                });
-
-                if (error) {
-                    console.error('Error signing in with Google:', error);
-                    alert('Error signing in with Google: ' + error.message);
-                    return;
-                }
-
-                // The user will be redirected to Google's OAuth page
-                // After successful authentication, they'll be redirected back to this page
-                console.log('Redirecting to Google OAuth...');
             } catch (error) {
-                console.error('Unexpected error during Google sign-in:', error);
-                alert('An unexpected error occurred. Please try again.');
+                console.error('Error signing in with Google:', error);
+                alert('Error signing in with Google: ' + error.message);
             }
         }
 
         // Check for authentication state on page load
-        async function checkAuthState() {
-            try {
-                if (!supabase) return;
-
-                const { data: { session } } = await supabase.auth.getSession();
-                
-                if (session) {
-                    console.log('User is authenticated:', session.user);
-                    // You can update the UI to show the user is logged in
-                    // For example, change the "Se connecter" button to show user info
-                    const connectBtn = document.querySelector('.nav-buttons button:first-child');
-                    if (connectBtn) {
-                        connectBtn.textContent = session.user.email;
-                    }
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is authenticated:', user);
+                const loginBtn = document.getElementById('loginBtn');
+                if (loginBtn) {
+                    loginBtn.textContent = user.displayName || user.email;
                 }
-            } catch (error) {
-                console.error('Error checking auth state:', error);
+            } else {
+                console.log('User is not authenticated');
+                const loginBtn = document.getElementById('loginBtn');
+                if (loginBtn) {
+                    loginBtn.textContent = 'Login';
+                }
             }
-        }
-
-        // Listen for authentication state changes
-        if (supabase) {
-            supabase.auth.onAuthStateChange((event, session) => {
-                console.log('Auth state changed:', event, session);
-                if (event === 'SIGNED_IN' && session) {
-                    console.log('User signed in:', session.user);
-                    hideModal();
-                    const connectBtn = document.querySelector('.nav-buttons button:first-child');
-                    if (connectBtn) {
-                        connectBtn.textContent = session.user.email;
-                    }
-                } else if (event === 'SIGNED_OUT') {
-                    console.log('User signed out');
-                    const connectBtn = document.querySelector('.nav-buttons button:first-child');
-                    if (connectBtn) {
-                        connectBtn.textContent = 'Se connecter';
-                    }
-                }
-            });
-        }
-
-        // Check auth state when page loads
-        window.addEventListener('load', checkAuthState);
+        });
     </script>
 </body>
 </html>
