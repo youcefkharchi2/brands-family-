@@ -230,6 +230,9 @@
                 <span class="brands">Brands</span>
                 <span class="family">Family</span>
             </div>
+        </div>
+        <div class="nav-buttons">
+            <button id="loginBtn">Login</button>
             <div id="userProfile" class="user-profile" style="display: none;">
                 <img id="userPhoto" src="" alt="User Photo">
                 <span id="userName"></span>
@@ -237,9 +240,6 @@
                     <button onclick="signOut()" class="logout-btn">Log out</button>
                 </div>
             </div>
-        </div>
-        <div class="nav-buttons">
-            <button id="loginBtn">Login</button>
             <button><img src="image/image 2.png" alt="Store"> Store</button>
         </div>
     </header>
@@ -342,7 +342,9 @@
                 }
                 if (userProfile) {
                     userProfile.style.display = 'flex';
+                    console.log('user.photoURL:', user.photoURL);
                     userPhoto.src = user.photoURL || 'image/image3';
+                    console.log('userPhoto.src set to:', userPhoto.src);
                     userName.textContent = user.displayName || user.email;
                     console.log('userProfile shown with:', user.displayName || user.email);
                 }
