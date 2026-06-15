@@ -170,6 +170,65 @@
             height: 20px;
         }
 
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: 'TT Moons', Arial, sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1877f2;
+        }
+
+        .email-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'TT Moons', Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .email-btn:hover {
+            background-color: #555;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: #ddd;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
         .close-btn {
             position: absolute;
             top: 10px;
@@ -273,6 +332,12 @@
         <div class="modal-content">
             <span class="close-btn" onclick="hideModal()">&times;</span>
             <h2>Login</h2>
+            <form id="emailPasswordForm" onsubmit="signInWithEmailPassword(event)">
+                <input type="email" id="email" class="form-input" placeholder="Adresse e-mail" required>
+                <input type="password" id="password" class="form-input" placeholder="Mot de passe" required>
+                <button type="submit" class="email-btn">CONNEXION</button>
+            </form>
+            <div class="divider">ou</div>
             <button type="button" class="google-btn" onclick="signInWithGoogle()">
                 <img src="https://www.google.com/favicon.ico" alt="Google">
                 CONTINUER AVEC GOOGLE
@@ -352,6 +417,24 @@
             } catch (error) {
                 console.error('Error signing in with Facebook:', error);
                 alert('Error signing in with Facebook: ' + error.message);
+            }
+        }
+
+        // Sign in with email and password
+        async function signInWithEmailPassword(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const result = await auth.signInWithEmailAndPassword(email, password);
+                console.log('User signed in with email/password:', result.user);
+                hideModal();
+                // Update UI to show user is logged in
+                updateUserProfile(result.user);
+            } catch (error) {
+                console.error('Error signing in with email/password:', error);
+                alert('Error signing in: ' + error.message);
             }
         }
 
