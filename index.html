@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brands Family</title>
-    <link rel="icon" type="image/png" href="image/brands">
+    <link rel="icon" type="image/png" href="image/brands.png">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-facebook-auth-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -40,8 +41,8 @@
         }
 
         .nav-buttons button {
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 8px 14px;
+            font-size: 13px;
             cursor: pointer;
             background-color: white;
             border: none;
@@ -141,6 +142,34 @@
             height: 20px;
         }
 
+        .facebook-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'TT Moons', Arial, sans-serif;
+            font-weight: bold;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .facebook-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .facebook-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
         .close-btn {
             position: absolute;
             top: 10px;
@@ -159,7 +188,7 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 5px;
             transition: background-color 0.3s;
             position: relative;
@@ -170,15 +199,15 @@
         }
 
         .user-profile img {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             object-fit: cover;
         }
 
         .user-profile span {
             font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .dropdown-menu {
@@ -226,10 +255,6 @@
     <header class="header">
         <div class="logo-container">
             <img src="image/brands.png" alt="Brands Family Logo" class="logo">
-            <div class="brand-name">
-                <span class="brands">Brands</span>
-                <span class="family">Family</span>
-            </div>
         </div>
         <div class="nav-buttons">
             <button id="loginBtn">Login</button>
@@ -251,6 +276,10 @@
             <button type="button" class="google-btn" onclick="signInWithGoogle()">
                 <img src="https://www.google.com/favicon.ico" alt="Google">
                 CONTINUER AVEC GOOGLE
+            </button>
+            <button type="button" class="facebook-btn" onclick="signInWithFacebook()">
+                <img src="https://www.facebook.com/favicon.ico" alt="Facebook">
+                CONTINUER AVEC FACEBOOK
             </button>
         </div>
     </div>
@@ -308,6 +337,21 @@
             } catch (error) {
                 console.error('Error signing in with Google:', error);
                 alert('Error signing in with Google: ' + error.message);
+            }
+        }
+
+        // Sign in with Facebook using Firebase
+        async function signInWithFacebook() {
+            try {
+                const provider = new firebase.auth.FacebookAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                console.log('User signed in with Facebook:', result.user);
+                hideModal();
+                // Update UI to show user is logged in
+                updateUserProfile(result.user);
+            } catch (error) {
+                console.error('Error signing in with Facebook:', error);
+                alert('Error signing in with Facebook: ' + error.message);
             }
         }
 
