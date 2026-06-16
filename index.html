@@ -229,6 +229,24 @@
             right: 0;
         }
 
+        .toggle-auth {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .toggle-auth a {
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .toggle-auth a:hover {
+            text-decoration: underline;
+        }
+
         .close-btn {
             position: absolute;
             top: 10px;
@@ -331,12 +349,16 @@
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="hideModal()">&times;</span>
-            <h2>Login</h2>
-            <form id="emailPasswordForm" onsubmit="signInWithEmailPassword(event)">
+            <h2 id="modalTitle">Login</h2>
+            <form id="emailPasswordForm" onsubmit="handleAuth(event)">
                 <input type="email" id="email" class="form-input" placeholder="Adresse e-mail" required>
                 <input type="password" id="password" class="form-input" placeholder="Mot de passe" required>
-                <button type="submit" class="email-btn">CONNEXION</button>
+                <button type="submit" class="email-btn" id="authBtn">CONNEXION</button>
             </form>
+            <p class="toggle-auth">
+                <span id="toggleText">Pas de compte?</span>
+                <a href="#" onclick="toggleAuthMode(event)" id="toggleLink">S'inscrire</a>
+            </p>
             <div class="divider">ou</div>
             <button type="button" class="google-btn" onclick="signInWithGoogle()">
                 <img src="https://www.google.com/favicon.ico" alt="Google">
@@ -409,6 +431,7 @@
         async function signInWithFacebook() {
             try {
                 const provider = new firebase.auth.FacebookAuthProvider();
+                provider.addScope('public_profile');
                 const result = await auth.signInWithPopup(provider);
                 console.log('User signed in with Facebook:', result.user);
                 hideModal();
@@ -435,6 +458,57 @@
             } catch (error) {
                 console.error('Error signing in with email/password:', error);
                 alert('Error signing in: ' + error.message);
+            }
+        }
+
+        // Sign up with email and password
+        async function signUpWithEmailPassword(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const result = await auth.createUserWithEmailAndPassword(email, password);
+                console.log('User created with email/password:', result.user);
+                hideModal();
+                // Update UI to show user is logged in
+                updateUserProfile(result.user);
+            } catch (error) {
+                console.error('Error creating user:', error);
+                alert('Error creating account: ' + error.message);
+            }
+        }
+
+        // Toggle between login and sign-up modes
+        let isSignUpMode = false;
+        function toggleAuthMode(event) {
+            event.preventDefault();
+            isSignUpMode = !isSignUpMode;
+            
+            const modalTitle = document.getElementById('modalTitle');
+            const authBtn = document.getElementById('authBtn');
+            const toggleText = document.getElementById('toggleText');
+            const toggleLink = document.getElementById('toggleLink');
+            
+            if (isSignUpMode) {
+                modalTitle.textContent = 'S\'inscrire';
+                authBtn.textContent = 'CRÉER UN COMPTE';
+                toggleText.textContent = 'Déjà un compte?';
+                toggleLink.textContent = 'Se connecter';
+            } else {
+                modalTitle.textContent = 'Login';
+                authBtn.textContent = 'CONNEXION';
+                toggleText.textContent = 'Pas de compte?';
+                toggleLink.textContent = 'S\'inscrire';
+            }
+        }
+
+        // Handle authentication (login or sign-up)
+        function handleAuth(event) {
+            if (isSignUpMode) {
+                signUpWithEmailPassword(event);
+            } else {
+                signInWithEmailPassword(event);
             }
         }
 
