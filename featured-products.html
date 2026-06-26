@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produits Vedettes - Premium E-commerce</title>
+    <style>
+        :root {
+            --primary-color: #222;
+            --secondary-color: #f8f9fa;
+            --accent-color: #e74c3c;
+            --text-light: #555;
+            --border-color: #eee;
+            --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            padding: 20px;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 50px;
+        }
+
+        .categories {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .category-column {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .category-column:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .category-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .category-items {
+            list-style: none;
+        }
+
+        .category-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 16px;
+            color: var(--text-light);
+            transition: all var(--transition-speed);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+        .category-item:hover {
+            color: var(--primary-color);
+            padding-left: 10px;
+        }
+
+        .category-item::before {
+            content: '›';
+            margin-right: 10px;
+            color: var(--accent-color);
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .featured-products {
+            flex: 1;
+            background-color: #fff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-products::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--accent-color);
+        }
+
+        .featured-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .featured-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .product-list {
+            list-style: none;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            padding: 22px 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: all var(--transition-speed);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-item:hover {
+            background-color: var(--secondary-color);
+            transform: translateX(8px);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-item:hover .product-image {
+            transform: scale(1.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-item:hover .product-price {
+            color: var(--accent-color);
+        }
+
+        .product-image {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-right: 20px;
+            transition: all var(--transition-speed);
+            background-color: #f9f9f9;
+            padding: 5px;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: 500;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            transition: color var(--transition-speed);
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #555;
+            transition: color var(--transition-speed);
+        }
+
+        /* Animation d'entrée */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-item {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .product-item:nth-child(1) { animation-delay: 0.1s; }
+        .product-item:nth-child(2) { animation-delay: 0.2s; }
+        .product-item:nth-child(3) { animation-delay: 0.3s; }
+        .product-item:nth-child(4) { animation-delay: 0.4s; }
+        .product-item:nth-child(5) { animation-delay: 0.5s; }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .categories {
+                flex: 1;
+            }
+
+            .featured-products {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="categories">
+            <div class="category-column">
+                <h2 class="category-title">Vêtements Homme</h2>
+                <ul class="category-items">
+                    <li class="category-item">T-shirts & Polos</li>
+                    <li class="category-item">Pantalons & Jeans</li>
+                    <li class="category-item">Chaussures</li>
+                    <li class="category-item">Accessoires</li>
+                    <li class="category-item">Sportswear</li>
+                </ul>
+            </div>
+            <div class="category-column">
+                <h2 class="category-title">Vêtements Femme</h2>
+                <ul class="category-items">
+                    <li class="category-item">Robes & Jupes</li>
+                    <li class="category-item">Hauts & Blouses</li>
+                    <li class="category-item">Chaussures</li>
+                    <li class="category-item">Sacs & Écharpes</li>
+                    <li class="category-item">Bijoux</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="featured-products">
+            <h2 class="featured-title">Nouveautés</h2>
+            <ul class="product-list">
+                <li class="product-item">
+                    <img src="https://via.placeholder.com/70x70/e74c3c/ffffff?text=Chaussure+1" alt="Chaussure 1" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">Baskets Mode Cuir Noir</div>
+                        <div class="product-price">299,99 DT</div>
+                    </div>
+                </li>
+                <li class="product-item">
+                    <img src="https://via.placeholder.com/70x70/3498db/ffffff?text=Montre+1" alt="Montre 1" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">Montre Connectée Premium</div>
+                        <div class="product-price">599,99 DT</div>
+                    </div>
+                </li>
+                <li class="product-item">
+                    <img src="https://via.placeholder.com/70x70/2ecc71/ffffff?text=Veste+1" alt="Veste 1" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">Veste d'Hiver en Laine</div>
+                        <div class="product-price">399,99 DT</div>
+                    </div>
+                </li>
+                <li class="product-item">
+                    <img src="https://via.placeholder.com/70x70/f39c12/ffffff?text=Sac+1" alt="Sac 1" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">Sac Main Cuir Élégant</div>
+                        <div class="product-price">249,99 DT</div>
+                    </div>
+                </li>
+                <li class="product-item">
+                    <img src="https://via.placeholder.com/70x70/9b59b6/ffffff?text=Bijou+1" alt="Bijou 1" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">Collier Argent Fin</div>
+                        <div class="product-price">179,99 DT</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
